@@ -32,3 +32,4 @@ echo "Execution time : $SECONDS"
 #ps -C $RUN_LDA -o %cpu,%mem,cmd
 #ps -p $RUN_LDA $INPUT $OUTPUT -o %cpu,%mem,cmd
 
+rmdir output
