@@ -58,15 +58,10 @@ def print_human_readable_word_topic_table(word_topic_table, vocabulary):
 
 
 
+model = "../model/paraLDA/20newsgroupsModel.tw"
+vocab = "../data/paraLDA/20newsgroups.dict"
 
-
-modeldir = "/home/nw/quanox/soft/paraLDA/bin/output"
-
-model = modeldir + "/20newsGroupsModel.tw"
-vocab = "../data/paraLDA/vocab.dict"
-
-
-modelfile = open("paraLDAresult.tw")
+modelfile = open(model)
 
 word_topic_model = np.loadtxt(modelfile, delimiter=",")
 shape = word_topic_model.shape
@@ -76,4 +71,4 @@ wordDim = shape[1]
 
 vocab = load_vocab(vocab)
 
-print_human_readable_word_topic_table(beta, vocab)
+print_human_readable_word_topic_table(word_topic_model, vocab)
