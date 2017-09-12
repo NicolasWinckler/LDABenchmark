@@ -9,7 +9,7 @@ def load_vocab(path):
     _ = np.load(path)
     return np.load(path)
 
-def print_human_readable_word_topic_table(word_topic_table, vocabulary, outputFileName):
+def print_human_readable_word_topic_table(word_topic_table, vocabulary):
     ##########################################################################
     # normalize proba and create a human readable list for each topic with descendent proba
 

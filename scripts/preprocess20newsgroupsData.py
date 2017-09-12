@@ -89,7 +89,7 @@ newsgroups = fetch_20newsgroups(
 
 
 # Vectorize them with a vocabulary of 1000 words
-tf_vectorizer = CountVectorizer(max_df=0.9, min_df=2, max_features=1000,
+tf_vectorizer = CountVectorizer(max_df=0.2, min_df=5, max_features=10000,
                                 stop_words="english")
 newsCorpus = tf_vectorizer.fit_transform(newsgroups.data)
 vocab = tf_vectorizer.get_feature_names()
