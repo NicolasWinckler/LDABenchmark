@@ -1,0 +1,6 @@
+dataPath:/home/nw/quanox/soft/LDABenchmark/data/paraLDA/20newsgroups
+numTopics:20
+alpha:0.1
+beta:0.1
+numIterations:100
+outputFile:../../model/paraLDA/20newsgroupsModel
