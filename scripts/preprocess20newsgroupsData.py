@@ -55,8 +55,11 @@ def processParaLDA(corpus, vocabulary, outdir):
 	mat_shape = corpus.get_shape()
 	dim_col = mat_shape[1]
 
-	corpusfileName = outdir + "/paraLDA/20newsgroupsCorpus.data"
-	vocabfileName = outdir + "/paraLDA/vocab.dict"
+	# must be with same name
+	#corpusfileName = outdir + "/paraLDA/20newsgroupsCorpus.data"
+	#vocabfileName = outdir + "/paraLDA/vocab.dict"
+	corpusfileName = outdir + "/paraLDA/20newsgroups.data"
+	vocabfileName = outdir + "/paraLDA/20newsgroups.dict"
 	#----------------------------------------------
 	# dump corpus
 	np.savetxt(corpusfileName, corpus.todense(), delimiter=",")

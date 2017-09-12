@@ -34,3 +34,9 @@ topp() (
 $LIGHTLDA
 
 echo "Execution time : $SECONDS"
+
+# cleaning, and moving models to model directory
+mv server_0_table_0.model ../model/LightLDA/server_0_table_0.model
+mv server_0_table_1.model ../model/LightLDA/server_0_table_1.model
+mv doc_topic.0 ../model/LightLDA/doc_topic.0
+mv *.log ../model/LightLDA/

@@ -1,16 +1,18 @@
 #!/bin/bash
 
-LDAPLUSPLUS="/home/nw/quanox/soft/supervised-lda"
+EXEC_PATH="/home/nw/quanox/soft/paraLDA/bin"
 
-EXEC_PATH="$/home/nw/quanox/soft/paraLDA/bin"
+#INPUT="../data/paraLDA/20newsgroupsCorpus.data"
+#OUTPUT="../data/paraLDA/vocab.dict"
 
-IO_PATH="../data/paraLDA"
-INPUT="../data/paraLDA/20newsgroupsCorpus.data"
-OUTPUT="../data/paraLDA/vocab.dict"
 
-CONFIGFILE="parameters.txt"
+CONFIGFILE="../options/paraLDAConfigFile.txt"
 RUN_LDA="$EXEC_PATH/paraLDA $CONFIGFILE"
+#cd $EXEC_PATH
+#CONFIGFILE:"../../../LDABenchmark/options/paraLDAConfigFile.txt"
+#RUN_LDA="paraLDA $CONFIGFILE"
 
+mkdir -p output
 
 
 topp() (
@@ -25,6 +27,7 @@ topp() (
 #topp 
 $RUN_LDA
 
+#cd -
 echo "Execution time : $SECONDS"
 #ps -C $RUN_LDA -o %cpu,%mem,cmd
 #ps -p $RUN_LDA $INPUT $OUTPUT -o %cpu,%mem,cmd
