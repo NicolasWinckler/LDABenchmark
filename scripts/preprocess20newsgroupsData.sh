@@ -5,10 +5,12 @@ mkdir -p ../data
 mkdir -p ../data/LDApp
 mkdir -p ../data/LightLDA
 mkdir -p ../data/paraLDA
+mkdir -p ../data/PLDA
 mkdir -p ../model
 mkdir -p ../model/LDApp
 mkdir -p ../model/LightLDA
 mkdir -p ../model/paraLDA
+mkdir -p ../model/PLDA
 
 python preprocess20newsgroupsData.py
 

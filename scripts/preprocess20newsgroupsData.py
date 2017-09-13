@@ -4,7 +4,7 @@ import pickle
 import numpy as np
 from sklearn.datasets import fetch_20newsgroups, dump_svmlight_file
 from sklearn.feature_extraction.text import CountVectorizer
-
+from scipy.sparse import csr_matrix, find
 
 
 
@@ -55,6 +55,7 @@ def processParaLDA(corpus, vocabulary, outdir):
 	mat_shape = corpus.get_shape()
 	dim_col = mat_shape[1]
 
+
 	# must be with same name
 	#corpusfileName = outdir + "/paraLDA/20newsgroupsCorpus.data"
 	#vocabfileName = outdir + "/paraLDA/vocab.dict"
@@ -79,19 +80,31 @@ def processPLDA(corpus, vocabulary, outdir):
 	dim_row = mat_shape[0]
 	dim_col = mat_shape[1]
 
-	corpusfileName = outdir + "/LightLDA/20newsgroupsCorpus.libsvm"
-	vocabfileName = outdir + "/LightLDA/vocab.word_id.dict"
+	corpusfileName = outdir + "/PLDA/20newsgroupsCorpus.txt"
+	vocabfileName = outdir + "/PLDA/vocab.dict"
 	#----------------------------------------------
 	# dump corpus
-	# Notes: need the folowing command on this file for special tab in LightLDA format
-	# cat data20newsgroup.libsvm | sed 's/ /\t/'
-	dump_svmlight_file(corpus,range(dim_row),corpusfileName)
+
+	#rows, cols, values = find(corpus)
+	#for i, j, v in zip(rows, cols, values):
+
+	pldaCorpusFile = open(corpusfileName, 'w')
+	for docId in range(dim_row):
+		doc = corpus.getrow(docId)
+		_, wordIds, wordCounts = find(doc)
+		line = ""
+		for wordId, wordCount in zip(wordIds, wordCounts):
+			line += str(vocabulary[wordId]) + " " + str(wordCount) + " "
+		line +="\n"
+		pldaCorpusFile.write(line)
+	pldaCorpusFile.close()
 
 	#----------------------------------------------
 	# dump vocabulary
 	projection = corpus.sum(0)
 	vocabfile = open(vocabfileName,'w')
 
+	
 	for word in range(dim_col):
 		line = '\t'.join([str(word), vocabulary[word], str(projection.item(0,word))]) + '\n'
 		vocabfile.write(line)
@@ -124,3 +137,4 @@ vocab = tf_vectorizer.get_feature_names()
 processLightLDA(newsCorpus, vocab, outputdir)
 processLDApp(newsCorpus, vocab, outputdir, newsgroups)
 processParaLDA(newsCorpus, vocab, outputdir)
+processPLDA(newsCorpus, vocab, outputdir)

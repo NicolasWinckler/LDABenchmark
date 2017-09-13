@@ -24,8 +24,9 @@ topp() (
   kill "$pid"
 )
 
+MEM_CHECK="../build/memusg/memusg"
 #topp 
-$RUN_LDA
+$MEM_CHECK $RUN_LDA
 
 #cd -
 echo "Execution time : $SECONDS"
