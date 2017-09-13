@@ -5,38 +5,83 @@ EXEC_PATH="../build/supervised-lda/build"
 INPUT="../data/LDApp/20newsgroupsCorpus.npy"
 OUTPUT="../model/LDApp/20newsgroupsModel.npy"
 
+ITERATION_NB=20
+TOPIC_NB=20
+WORKER_NB=4
+ESTEP_IT=30
+
+if [[ "$#" -eq 1 ]]; then
+key="$1"
+case $key in
+    -h|--help)
+	echo "possible command lines"
+	echo "  -n or --iterations arg (default=$ITERATION_NB)"
+	echo "  -k or --topics arg (default=$TOPIC_NB)"
+	echo "  -w or --workers arg (default=$WORKER_NB)"
+	echo "  -e or --e_step_iterations arg (default=$ESTEP_IT)"
+	echo "  -v or --verbose"
+	echo "  -h or --help"
+	exit
+    ;;
+    *)
+	echo "Unknown command line. Use -h or --help command"
+	exit
+    ;;
+esac
+fi
+
+while [[ $# > 1 ]]
+do
+key="$1"
+
+case $key in
+    -n|--iterations)
+    ITERATION_NB="$2"
+    shift
+    ;;
+    -k|--topics)
+    TOPIC_NB="$2"
+    shift
+    ;;
+    -w|--workers)
+    WORKER_NB="$2"
+    shift
+    ;;
+    -e|--e_step_iterations)
+    ESTEP_IT="$2"
+    shift
+    ;;
+    -v|--verbose)
+    VERBOSE="$2"
+    shift
+    ;;
+    *)
+	echo "Unknown command line. Use -h or --help command to list the commands"
+	exit
+    ;;
+esac
+shift 
+done
+
+
+
+
 RUN_LDA="$EXEC_PATH/lda train"
 
-RUN_LDA+=" --topics 20"
-RUN_LDA+=" --iterations 20"
+RUN_LDA+=" --topics $TOPIC_NB"
+RUN_LDA+=" --iterations $ITERATION_NB"
 RUN_LDA+=" --quiet"
-#RUN_LDA+=" --e_step_iterations 100 "
+RUN_LDA+=" --e_step_iterations $ESTEP_IT "
 RUN_LDA+=" --e_step_tolerance 0.1"
 RUN_LDA+=" --snapshot_every 100"
-RUN_LDA+=" --workers 4"
+RUN_LDA+=" --workers $WORKER_NB"
 RUN_LDA+=" $INPUT"
 RUN_LDA+=" $OUTPUT"
 
 
-topp() (
-  $* &>/dev/null &
-  pid="$!"
-  trap ':' INT
-  echo 'CPU  MEM'
-  while sleep 1; do ps --no-headers -o '%cpu,%mem' -p "$pid"; done
-  kill "$pid"
-)
-
-
-MEM_CHECK="../build/memusg/memusg"
-#valgrind -q --tool=massif --pages-as-heap=yes --massif-out-file=massif.out $RUN_LDA ; grep mem_heap_B massif.out | sed -e 's/mem_heap_B=\(.*\)/\1/' | sort -g | tail -n 1 | awk '{ foo = $1 / 1024 / 1024 ; print foo "MB" }'
-
 
 $MEM_CHECK $RUN_LDA
 
-#topp $RUN_LDA
-
 echo "Execution time : $SECONDS s."
-#ps -C $RUN_LDA -o %cpu,%mem,cmd
-#ps -p $RUN_LDA $INPUT $OUTPUT -o %cpu,%mem,cmd
+
 

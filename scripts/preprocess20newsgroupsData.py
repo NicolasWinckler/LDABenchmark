@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import pickle
-
+import optparse
 import numpy as np
 from sklearn.datasets import fetch_20newsgroups, dump_svmlight_file
 from sklearn.feature_extraction.text import CountVectorizer
@@ -114,27 +114,60 @@ def processPLDA(corpus, vocabulary, outdir):
 
 
 ########################################################### todo: proper main
-outputdir = "../data"
-
-print("Fetch 20newsgroups corpus")
-
-# Fetch the newsgroups raw data
-newsgroups = fetch_20newsgroups(
-    subset="train",
-    remove=("headers", "footers", "quotes")
-)
 
 
-print("Data preprocessing start")
 
 
-# Vectorize them with a vocabulary of 1000 words
-tf_vectorizer = CountVectorizer(max_df=0.9, min_df=2, max_features=1000,
-                                stop_words="english")
-newsCorpus = tf_vectorizer.fit_transform(newsgroups.data)
-vocab = tf_vectorizer.get_feature_names()
+def main():
+    
+    parser = optparse.OptionParser()
+    parser.add_option("--data_dir",     dest="outputdir",    type=str,   help="data root directory",   default="../data")
+    parser.add_option("--max_df",       dest="max_df",       type=float, help="max_df float in [0,1]", default=0.9)
+    parser.add_option("--min_df",       dest="min_df",       type=int,   help="min_df int in [1,N]",   default=2)
+    parser.add_option("--max_features", dest="max_features", type=int,   help="Maximum vocab size",    default=1000)
 
-processLightLDA(newsCorpus, vocab, outputdir)
-processLDApp(newsCorpus, vocab, outputdir, newsgroups)
-processParaLDA(newsCorpus, vocab, outputdir)
-processPLDA(newsCorpus, vocab, outputdir)
+
+    (options, args) = parser.parse_args()
+    outputdir = options.outputdir
+
+    print("Fetch 20newsgroups corpus")
+    # Fetch the newsgroups raw data
+    newsgroups = fetch_20newsgroups(
+        subset="train",
+        remove=("headers", "footers", "quotes")
+    )
+
+
+    print("Data preprocessing start")
+
+    
+    tf_vectorizer = CountVectorizer(max_df=options.max_df, 
+                                    min_df=options.min_df, 
+                                    max_features=options.max_features,
+                                    stop_words="english")
+    newsCorpus = tf_vectorizer.fit_transform(newsgroups.data)
+    vocab = tf_vectorizer.get_feature_names()
+
+
+    shape = newsCorpus.get_shape()
+    dim_row = shape[0]
+    dim_col = shape[1]
+    max_size = dim_row*dim_col
+    non_zero_ele = newsCorpus.count_nonzero()
+    MBsize = non_zero_ele * 4/1024/1024
+
+    print("Matrix dimensions: D x W = {} x {} = {}".format(dim_row, dim_col, max_size))
+    print("Non zero elements: {} (sparse storage)".format(non_zero_ele))
+    print("Size estimation: {} MB".format(MBsize))
+
+    processLightLDA(newsCorpus, vocab, outputdir)
+    processLDApp(newsCorpus, vocab, outputdir, newsgroups)
+    processParaLDA(newsCorpus, vocab, outputdir)
+    processPLDA(newsCorpus, vocab, outputdir)
+
+    
+
+if __name__ == "__main__":
+    main()
+
+
