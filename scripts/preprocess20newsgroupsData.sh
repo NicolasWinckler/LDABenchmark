@@ -16,10 +16,10 @@ sed -i 's/ /\t/' ../data/LightLDA/20newsgroupsCorpus.libsvm
 #cat ../data/LightLDA/20newsgroupsCorpus.libsvm | sed 's/ /\t/'
 
 
-LIGHTLDA_PATH="/home/nw/quanox/soft/test/LightLDA"
-DUMP_BINARY="$LIGHTLDA_PATH/bin/dump_binary"
+#LIGHTLDA_PATH="/home/nw/quanox/soft/test/LightLDA"
+DUMP_BINARY="../build/LightLDA/bin/dump_binary"
 
-INPUT="../data/LightLDA/20newsgroupsCorpus.libsvm" 
+INPUT="../data/LightLDA/20newsgroupsCorpus.libsvm"
 INPUT+=" ../data/LightLDA/vocab.word_id.dict"
 
 OUTPUT="../data/LightLDA" 

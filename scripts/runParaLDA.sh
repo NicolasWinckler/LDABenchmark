@@ -1,6 +1,6 @@
 #!/bin/bash
 
-EXEC_PATH="/home/nw/quanox/soft/paraLDA/bin"
+EXEC_PATH="../build/paraLDA/bin"
 
 #INPUT="../data/paraLDA/20newsgroupsCorpus.data"
 #OUTPUT="../data/paraLDA/vocab.dict"
