@@ -5,10 +5,19 @@ MEM_CHECK="../build/memusg/memusg"
 EXEC_PATH="../build/LightLDA/bin"
 IO_PATH="../data/LightLDA"
 
-DOC_NB=11314
-VOCAB_NB=1000
+# nytimes setting
+
+DOC_NB=300000
+VOCAB_NB=101600
 ITERATION_NB=100
 TOPIC_NB=20
+
+# 20newsgroups setting
+#DOC_NB=11314
+#VOCAB_NB=1000
+#ITERATION_NB=100
+#TOPIC_NB=20
+
 WORKER_NB=4
 ALPHA=0.1
 BETA=0.01

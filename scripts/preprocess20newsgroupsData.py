@@ -154,7 +154,7 @@ def main():
     dim_col = shape[1]
     max_size = dim_row*dim_col
     non_zero_ele = newsCorpus.count_nonzero()
-    MBsize = non_zero_ele * 4/1024/1024
+    MBsize = non_zero_ele * 8/1024/1024
 
     print("Matrix dimensions: D x W = {} x {} = {}".format(dim_row, dim_col, max_size))
     print("Non zero elements: {} (sparse storage)".format(non_zero_ele))
